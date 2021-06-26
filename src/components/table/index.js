@@ -26,16 +26,16 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+function createData(name, category, description, price, discount) {
+  return { name, category, description, price, discount };
 }
 
 const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
+  createData('Frozen yoghurt', "Juice", "Nice juice", 24000, 10),
+  createData('Ice cream sandwich', "Food", "Nice food", 37000, 5),
+  createData('Eclair', "Coffe", "Nice coffee", 24000, 9),
+  createData('Cupcake', "Coffe", "Nice coffee", 67000, 10),
+  createData('Gingerbread', "Food", "Nice food", 49000, 12),
 ];
 
 const useStyles = makeStyles({
@@ -52,11 +52,11 @@ const ItemTableComponent = () => {
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-            <StyledTableCell align="right">Calories</StyledTableCell>
-            <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+            <StyledTableCell>Name</StyledTableCell>
+            <StyledTableCell align="left">Category</StyledTableCell>
+            <StyledTableCell align="left">Description</StyledTableCell>
+            <StyledTableCell align="right">Price&nbsp;(IDR)</StyledTableCell>
+            <StyledTableCell align="right">Discount&nbsp;(%)</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -65,10 +65,10 @@ const ItemTableComponent = () => {
               <StyledTableCell component="th" scope="row">
                 {row.name}
               </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
+              <StyledTableCell align="left">{row.category}</StyledTableCell>
+              <StyledTableCell align="left">{row.description}</StyledTableCell>
+              <StyledTableCell align="right">{row.price}</StyledTableCell>
+              <StyledTableCell align="right">{row.discount}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

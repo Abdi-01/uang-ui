@@ -31,7 +31,7 @@ const SidebarComponent = () => {
                     <FaMoneyCheckAlt />
                     <Caption>Report</Caption>
                 </Logo>
-                <Logo exact to="/" activeStyle={styleLink} style={styleDeco}>
+                <Logo exact to="/logout" activeStyle={styleLink} style={styleDeco}>
                     <IoLogOutOutline />
                     <Caption>Logout</Caption>
                 </Logo>
