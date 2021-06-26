@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import axios from 'axios';
+import { Route, Switch } from "react-router-dom";
+import { URL } from './helper'
+import MenuPage from './pages/menu';
+import ManagePage from './pages/manage';
+import ReportPage from './pages/report';
 
-function App() {
+const App = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Switch>
+        <Route exact path="/" component={MenuPage}/>
+        <Route path="/manage" component={ManagePage}/>
+        <Route path="/report" component={ReportPage}/>
+      </Switch>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
+
