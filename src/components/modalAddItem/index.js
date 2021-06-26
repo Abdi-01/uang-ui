@@ -5,19 +5,26 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Background, CloseModalButton, FormRecord, ModalHeader, ModalWrapper } from './modalAddItemComp'
 import { categoryType } from './data'
+import { URL_API } from '../../helper'
+import axios from 'axios';
+import { getItemAction } from '../../actions'
+import { useDispatch } from 'react-redux';
 
-const ModalAddItem = ({showModal, setShowModal}) => {
-
+const ModalAddItem = ({showModal, setShowModal, data}) => {
+    
     const [values, setValues] = useState({
-        itemName: '',
-        category: '',
+        id: null,
+        name: '',
+        idcategory: null,
         description: '',
         price: 0,
         discount: 0,
+        imageURL: ''
     })
 
     const modalRef = useRef()
-
+    const dispatch = useDispatch()
+    
     const animation = useSpring({
         config: {
             duration: 250
@@ -25,6 +32,13 @@ const ModalAddItem = ({showModal, setShowModal}) => {
         opacity: showModal ? 1 : 0,
         transform: showModal ? `translateY(0%)` : `translateY(-100%)`
     })
+    
+    const handleInitialData = () => {
+        if (data !== undefined && data !== null) {
+            console.log("Initial data", data)
+            setValues({ ...values, id: data.id, name: data.name, idcategory: data.idcategory, description: data.description, price: data.price, discount: data.discount, imageURL: data.imageURL})
+        }
+    }
 
     const closeModal = e => {
         if (modalRef.current === e.target) {
@@ -33,8 +47,8 @@ const ModalAddItem = ({showModal, setShowModal}) => {
     }
     
     const handleChangeCategory = (event) => {
-        // console.log(event.target.value)
-        setValues({ ...values, category: event.target.value})
+        console.log(event.target.value)
+        setValues({ ...values, idcategory: event.target.value})
     };
 
     const handleChangeDescription = (event) => {
@@ -49,10 +63,50 @@ const ModalAddItem = ({showModal, setShowModal}) => {
         setValues({ ...values, discount: event.target.value})
     };
 
-    const handleSaveItem = () => {
-        console.log(values)
-        setValues({ ...values, itemName: '', category: '', description: '', price: 0, discount: 0})
-        setShowModal(false)
+    const handleChangeImageURL = (event) => {
+        setValues({ ...values, imageURL: event.target.value})
+    };
+
+    const handleSaveItem = async () => {
+        try {
+            console.log(values)
+            let config = {
+                method: 'post',
+                url: URL_API + 'item/create',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                data: values
+            }
+            let response = await axios(config)
+            console.log("Response add item", response)
+            dispatch(getItemAction())
+            setValues({ ...values, name: '', idcategory: null, description: '', price: 0, discount: 0})
+            setShowModal(false)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleUpdateItem = async () => {
+        try {
+            console.log("Data update in modal", values)
+            let config = {
+                method: 'patch',
+                url: URL_API + 'item/update',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                data: values
+            }
+            let response = await axios(config)
+            console.log("Response add item", response)
+            dispatch(getItemAction())
+            setValues({ ...values, name: '', idcategory: null, description: '', price: 0, discount: 0})
+            setShowModal(false)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     const keyPress = useCallback(e => {
@@ -62,6 +116,7 @@ const ModalAddItem = ({showModal, setShowModal}) => {
     }, [setShowModal, showModal])
 
     useEffect(() => {
+        handleInitialData()
         document.addEventListener('keydown', keyPress)
         return () => document.removeEventListener('keydown', keyPress)
     }, [keyPress])
@@ -73,19 +128,19 @@ const ModalAddItem = ({showModal, setShowModal}) => {
                     <animated.div style={animation}>
                     <ModalWrapper>
                         <ModalHeader>
-                            Add Item
+                            {(data !== undefined ? "Update Item" : "Add Item")}
                         </ModalHeader>
                         <CloseModalButton onClick={() => setShowModal (prev => !prev)}/>
                         <FormRecord>
                             <TextField 
                                 required
-                                value={values.itemName}
-                                onChange={event => setValues({ ...values, itemName: event.target.value})}
+                                value={(data !== undefined ? data.name : values.name)}
+                                onChange={event => setValues({ ...values, name: event.target.value})}
                                 label="Item name" 
                                 fullWidth 
                                 variant="filled"
-                                error={values.itemName.length === 0 ? true : false} 
-                                helperText={values.itemName.length === 0 ? "Can't be empty" : false} 
+                                // error={values.name.length === 0 ? true : false} 
+                                // helperText={values.name.length === 0 ? "Can't be empty" : false} 
                             />
                             <TextField
                                 required fullWidth
@@ -97,31 +152,29 @@ const ModalAddItem = ({showModal, setShowModal}) => {
                                 variant="filled"
                                 >
                                 {categoryType.map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
+                                    <MenuItem key={option.value} value={option.value} >
+                                        {option.label}
                                     </MenuItem>
                                 ))}
                             </TextField>
                             <TextField
-                                required fullWidth multiline rows={2}
+                                required fullWidth multiline rows={3}
                                 size="small"
                                 style={{ marginTop: 20 }}
                                 label="Description"
-                                value={values.description}
+                                value={(data !== undefined ? data.description : values.description)}
                                 onChange={handleChangeDescription}
                                 variant="filled"
                                 >
                             </TextField>
                             <TextField
                                 required fullWidth
+                                value={(data !== undefined ? data.price : values.price)}
                                 size="small"
                                 style={{ marginTop: 20 }}
                                 label="Price"
                                 type="number"
                                 onChange={handleChangePrice}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
                                 variant="filled"
                             />
                             <TextField
@@ -131,17 +184,25 @@ const ModalAddItem = ({showModal, setShowModal}) => {
                                 label="Discount (%)"
                                 type="number"
                                 onChange={handleChangeDiscount}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
                                 variant="filled"
+                                value={(data !== undefined ? data.discount : values.discount)}                          
+                            />
+                            <TextField
+                                required fullWidth
+                                size="small"
+                                style={{ marginTop: 20 }}
+                                label="Image URL"
+                                type="url"
+                                onChange={handleChangeImageURL}
+                                variant="filled"
+                                value={(data !== undefined ? data.imageURL : values.imageURL)}
                             />
                             <Button 
-                                disabled={(values.itemName.length > 0 && values.category.length > 0 && values.description.length > 0 && values.price >= 0 && values.discount >= 0) ? false : true}
+                                // disabled={(values.name.length > 0 && values.idcategory !== 0 && values.description.length > 0 && values.price > 0 && values.discount > -1) ? false : true}
                                 variant="outlined" 
                                 color="primary" 
                                 style={{marginTop: 20}}
-                                onClick={handleSaveItem}
+                                onClick={(data !== undefined ? handleUpdateItem : handleSaveItem)}
                             >
                                 SAVE
                             </Button>

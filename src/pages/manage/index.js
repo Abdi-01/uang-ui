@@ -5,10 +5,10 @@ import { ManageWrapper, MenuWrapper } from './managePage'
 import Button from '@material-ui/core/Button';
 import ItemTableComponent from '../../components/table';
 
+
 const ManagePage = () => {
     const [showModal, setShowModal] = useState(false)
 
-    // open modal function
     const openModal = () => {
         setShowModal(prev => !prev)
     }

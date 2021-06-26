@@ -1,13 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import axios from 'axios';
 import { Route, Switch } from "react-router-dom";
-import { URL } from './helper'
+import { useDispatch } from 'react-redux';
+import { URL_API } from './helper'
 import MenuPage from './pages/menu';
 import ManagePage from './pages/manage';
 import ReportPage from './pages/report';
 import LogoutPage from './pages/logout';
+import { getItemAction } from './actions'
 
 const App = () => {
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getItemAction())
+  })
+
   return (
     <div className="App">
       <Switch>

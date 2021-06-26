@@ -5,17 +5,15 @@ import { IoFastFoodOutline, IoLogOutOutline } from 'react-icons/io5'
 import { FaMoneyCheckAlt } from 'react-icons/fa'
 
 const styleLink = {
-    "background-color": "#795548",
-    "color": "white"
+    backgroundColor: "#795548",
+    color: "white"
 }
 
 const styleDeco = {
-    "text-decoration": "none"
+    textDecoration: "none"
 }
 
 const SidebarComponent = () => {
-
-
     return (
         <>
             <Container>

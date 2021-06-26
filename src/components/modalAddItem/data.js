@@ -1,14 +1,14 @@
 export const categoryType = [
     {
-        value: 'Coffee',
+        value: 1,
         label: 'Coffee',
     },
     {
-        value: 'Juice',
+        value: 2,
         label: 'Juice',
     },
     {
-        value: 'Food',
+        value: 3,
         label: 'Food',
     }
 ]
