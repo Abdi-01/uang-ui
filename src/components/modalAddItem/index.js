@@ -119,7 +119,7 @@ const ModalAddItem = ({showModal, setShowModal, data}) => {
         handleInitialData()
         document.addEventListener('keydown', keyPress)
         return () => document.removeEventListener('keydown', keyPress)
-    }, [keyPress])
+    })
 
     return (
         <>
@@ -134,7 +134,7 @@ const ModalAddItem = ({showModal, setShowModal, data}) => {
                         <FormRecord>
                             <TextField 
                                 required
-                                value={(data !== undefined ? data.name : values.name)}
+                                value={values.name}
                                 onChange={event => setValues({ ...values, name: event.target.value})}
                                 label="Item name" 
                                 fullWidth 
@@ -162,14 +162,14 @@ const ModalAddItem = ({showModal, setShowModal, data}) => {
                                 size="small"
                                 style={{ marginTop: 20 }}
                                 label="Description"
-                                value={(data !== undefined ? data.description : values.description)}
+                                value={values.description}
                                 onChange={handleChangeDescription}
                                 variant="filled"
                                 >
                             </TextField>
                             <TextField
                                 required fullWidth
-                                value={(data !== undefined ? data.price : values.price)}
+                                value={ values.price}
                                 size="small"
                                 style={{ marginTop: 20 }}
                                 label="Price"
@@ -185,7 +185,7 @@ const ModalAddItem = ({showModal, setShowModal, data}) => {
                                 type="number"
                                 onChange={handleChangeDiscount}
                                 variant="filled"
-                                value={(data !== undefined ? data.discount : values.discount)}                          
+                                value={values.discount}                          
                             />
                             <TextField
                                 required fullWidth
@@ -195,7 +195,7 @@ const ModalAddItem = ({showModal, setShowModal, data}) => {
                                 type="url"
                                 onChange={handleChangeImageURL}
                                 variant="filled"
-                                value={(data !== undefined ? data.imageURL : values.imageURL)}
+                                value={values.imageURL}
                             />
                             <Button 
                                 // disabled={(values.name.length > 0 && values.idcategory !== 0 && values.description.length > 0 && values.price > 0 && values.discount > -1) ? false : true}

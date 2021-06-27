@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react'
-import axios from 'axios';
 import { Route, Switch } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import { URL_API } from './helper'
 import MenuPage from './pages/menu';
 import ManagePage from './pages/manage';
 import ReportPage from './pages/report';

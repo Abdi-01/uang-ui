@@ -84,35 +84,7 @@ const ItemTableComponent = () => {
   const handleCloseDelete = () => {
     setOpen(false);
   };
-
-  const printItems = () => {
-    // console.log("Print data", data)
-    if (data.length > 0) {
-      return data.map((item, index) => {
-        return <StyledTableRow key={item.name}>
-                  <StyledTableCell component="th" scope="row">
-                    {item.name}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    <Image src={item.imageURL}></Image>
-                  </StyledTableCell>
-                  <StyledTableCell align="left">{item.title}</StyledTableCell>
-                  <StyledTableCell align="left">{item.description}</StyledTableCell>
-                  <StyledTableCell align="right">{item.price}</StyledTableCell>
-                  <StyledTableCell align="right">{item.discount}</StyledTableCell>
-                  <StyledTableCell align="center">
-                    <Button variant="contained" color="primary" onClick={() => openModalUpdate(item)}>
-                      Update
-                    </Button>
-                    <Button variant="contained" color="secondary" onClick={() => handleOpenDelete(item.id, item.name)}>
-                      Delete
-                    </Button>
-                  </StyledTableCell>
-                </StyledTableRow>
-      })
-    }
-  }
-
+  
   const deleteItem = async () => {
     try {
       console.log(values.id)
@@ -128,6 +100,34 @@ const ItemTableComponent = () => {
       handleCloseDelete()
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  const printItems = () => {
+    // console.log("Print data", data)
+    if (data.length > 0) {
+      return data.map((item, index) => {
+        return <StyledTableRow key={item.name}>
+                  <StyledTableCell component="th" scope="row">
+                    {item.name}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <Image src={item.imageURL}/>
+                  </StyledTableCell>
+                  <StyledTableCell align="left">{item.title}</StyledTableCell>
+                  <StyledTableCell align="left">{item.description}</StyledTableCell>
+                  <StyledTableCell align="right">{item.price.toLocaleString()}</StyledTableCell>
+                  <StyledTableCell align="right">{item.discount}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    <Button variant="contained" color="primary" onClick={() => openModalUpdate(item)}>
+                      Update
+                    </Button>
+                    <Button variant="contained" color="secondary" onClick={() => handleOpenDelete(item.id, item.name)}>
+                      Delete
+                    </Button>
+                  </StyledTableCell>
+                </StyledTableRow>
+      })
     }
   }
 
