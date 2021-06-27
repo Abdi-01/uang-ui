@@ -23,7 +23,6 @@ import {
   ItemWrapper,
   BillContainer,
   Subtotal,
-  Tax,
   Payment,
   LogoWrapper,
   ButtonBill,
@@ -60,6 +59,7 @@ const MenuPage = () => {
   };
 
   const addBill = (item) => {
+    // console.log(item)
     let billData = {
         idItems: item.id,
         name: item.name,
@@ -75,8 +75,25 @@ const MenuPage = () => {
     // console.log(bill);
   };
 
-  const handleChangeSubtotal = () => {
+  const handleChangeSubtotal = (id, event) => {
+    let dataBills = bill
+    // console.log("change subtotal", dataBills, id, event)
+    dataBills.forEach(element => {
+      if (element.idItems === id) {
+        element.amount = parseInt(event.target.value)
+        element.subtotal = element.price * element.amount
+      }
+    });
+    setBill(dataBills)
+  };
 
+  const handleTotalPayment = () => {
+    let values = []
+    bill.forEach(element => {
+      values.push(element.subtotal)
+    })
+    console.log(values)
+    return values.reduce((accumulator, currentValue) => accumulator + currentValue).toLocaleString()
   }
 
   const printCard = () => {
@@ -100,6 +117,7 @@ const MenuPage = () => {
                 variant="contained"
                 color="secondary"
                 onClick={() => addBill(item)}
+                disabled={(bill.findIndex((element) => element.idItems === item.id ) === -1) ? false : true}
               >
                 Add to billing
               </Button>
@@ -123,8 +141,9 @@ const MenuPage = () => {
                         type="number" 
                         label="Total" 
                         size="small" 
-                        onChange={handleChangeSubtotal}
+                        onChange={(event) => handleChangeSubtotal(item.idItems, event)}
                         style={{width: '50px'}}
+                        defaultValue={1}
                     />
                     <Text 
                         style={{ fontStyle: "italic", fontWeight: 500 }}
@@ -177,14 +196,9 @@ const MenuPage = () => {
             <h2>Bills</h2>
             {printBillCard()}
           <Subtotal>
-            <p>Subtotal</p>
-            <p>IDR 10,000</p>
+            <p>Total</p>
+            <p>IDR {handleTotalPayment()}</p>
           </Subtotal>
-          <Tax>
-            <p>Tax (10%)</p>
-            <p>IDR 1,000</p>
-          </Tax>
-
           <Payment>
             <h2>Payment Method</h2>
             <LogoWrapper>
