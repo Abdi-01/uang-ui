@@ -266,7 +266,6 @@ const MenuPage = () => {
                     setPaymentValue({ ...paymentValue, cash: event.target.value })
                   }
                   style={{display: payment.cash}}
-                  defaultValue={0}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -279,7 +278,6 @@ const MenuPage = () => {
                     setPaymentValue({ ...paymentValue, coupon: event.target.value })
                   }
                   style={{display: payment.coupon}}
-                  defaultValue={0}
                 />
               </Grid>
             </Grid>
