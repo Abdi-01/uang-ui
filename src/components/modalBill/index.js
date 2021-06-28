@@ -1,13 +1,22 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { useSpring, animated } from "react-spring";
 import {
   Background,
   CloseModalButton,
   ModalHeader,
   ModalWrapper,
+  DetailBill,
+  CardItem,
+  Text,
+  BillDetail,
+  TexTotal,
+  Payment
 } from "./modalBillComp";
 
-const ModalBill = ({showModal, setShowModal, data}) => {
+let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+let today = new Date()
+
+const ModalBill = ({showModal, setShowModal, data, payment}) => {
     const modalRef = useRef();
 
     const animation = useSpring({
@@ -24,6 +33,33 @@ const ModalBill = ({showModal, setShowModal, data}) => {
         }
     };
 
+    // console.log("Bill data", data, payment)
+
+    const printCardData = () => {
+        return data.map((item) => {
+            return  <CardItem>
+                        <Text>{item.name} - {item.amount}</Text>
+                        <Text>IDR {item.subtotal.toLocaleString()}</Text>
+                    </CardItem>
+        })
+    }
+
+    const printTotal = () => {
+        let values = []
+        data.forEach(element => {
+            values.push(element.subtotal)
+        })
+        let result = values.reduce((accumulator, currentValue) => accumulator + currentValue)
+        let changeValue = parseInt(payment.cash) + parseInt(payment.coupon) - result
+        // console.log(changeValue)
+        return  <CardItem>
+                    <TexTotal>TOTAL</TexTotal>
+                    <TexTotal>IDR {result.toLocaleString()}</TexTotal>
+                </CardItem>
+    }
+
+    console.log(data, payment)
+
     return (
         <>
             {showModal ? (
@@ -31,9 +67,26 @@ const ModalBill = ({showModal, setShowModal, data}) => {
                     <animated.div style={animation}>
                     <ModalWrapper>
                         <ModalHeader>
-                            Bill Receipt
+                            BILL RECEIPT
                         </ModalHeader>
                         <CloseModalButton onClick={() => setShowModal (prev => !prev)}/>
+                        <DetailBill>
+                            {today.toLocaleDateString('WIB', options)}
+                            <BillDetail>
+                                {printCardData()}
+                            </BillDetail>
+                            {printTotal()}
+                            <Payment>
+                                <CardItem>
+                                    <Text>Cash</Text>
+                                    <Text>IDR {(payment.cash !== null ) ? parseInt(payment.cash).toLocaleString(): 0}</Text>
+                                </CardItem>
+                                <CardItem>
+                                    <Text>Coupon</Text>
+                                    <Text>IDR {(payment.coupon !== null ) ? parseInt(payment.coupon).toLocaleString(): 0}</Text>
+                                </CardItem>
+                            </Payment>
+                        </DetailBill>
                     </ModalWrapper>
                     </animated.div>
                 </Background>

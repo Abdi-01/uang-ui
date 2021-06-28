@@ -14,7 +14,7 @@ export const Background = styled.div`
 `
 
 export const ModalWrapper = styled.div`
-    width: 500px;
+    width: 700px;
     box-shadow: 0 5px 16px rgba(0,0,0,0.2);
     background: #fff;
     color: #000;
@@ -22,6 +22,7 @@ export const ModalWrapper = styled.div`
     z-index: 10;
     border-radius: 10px;
     padding: 0;
+    z-index: 100;
 `
 
 export const ModalHeader = styled.div`
@@ -40,4 +41,36 @@ export const CloseModalButton = styled(MdClose)`
     height: 25px;
     padding: 0;
     z-index: 10;
+`
+
+export const DetailBill = styled.div`
+    padding: 20px;
+    text-align: center;
+`
+
+export const BillDetail = styled.div`
+    border-bottom: 2px solid grey;
+    margin: 10px 0;
+`
+
+export const CardItem = styled.div`
+    display: flex;
+    justify-content: space-between;
+`
+
+export const Text = styled.p`
+    margin: 0;
+    font-size: 15px;
+`
+
+export const TexTotal = styled.p`
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+`
+
+export const Payment = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
 `

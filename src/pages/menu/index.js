@@ -42,6 +42,10 @@ const MenuPage = () => {
     cash: 'none',
     coupon: 'none'
   })
+  const [paymentValue, setPaymentValue] = useState({
+    cash: null,
+    coupon: null
+  })
   const { data } = useSelector(({ itemReducer }) => {
     return {
       data: itemReducer.item,
@@ -187,7 +191,10 @@ const MenuPage = () => {
                         IDR {item.subtotal.toLocaleString()}
                     </Text>
                 </EditBill>
-                <TextField label="Note" size="small" variant="filled" fullWidth/>
+                <TextField label="Note" size="small" variant="filled" fullWidth
+                  onChange={(event) =>
+                    setBill({ ...bill, note: event.target.value })
+                  }/>
             </ContentBill>
         </BillCard>
       });
@@ -255,18 +262,26 @@ const MenuPage = () => {
                   label="Input cash" 
                   size="small" 
                   variant="filled"
+                  onChange={(event) =>
+                    setPaymentValue({ ...paymentValue, cash: event.target.value })
+                  }
                   style={{display: payment.cash}}
+                  defaultValue={0}
                 />
               </Grid>
-            <Grid item xs={6}>
-              <TextField fullWidth
-                type="text" 
-                label="Input coupon code" 
-                size="small" 
-                variant="filled"
-                style={{display: payment.coupon}}
-              />
-            </Grid>
+              <Grid item xs={6}>
+                <TextField fullWidth
+                  type="text" 
+                  label="Input coupon code" 
+                  size="small" 
+                  variant="filled"
+                  onChange={(event) =>
+                    setPaymentValue({ ...paymentValue, coupon: event.target.value })
+                  }
+                  style={{display: payment.coupon}}
+                  defaultValue={0}
+                />
+              </Grid>
             </Grid>
           </Payment>
           <ButtonBill onClick={openModalBill}>
@@ -274,7 +289,7 @@ const MenuPage = () => {
           </ButtonBill>
         </BillContainer>
       </Container>
-      <ModalBill showModal={showModal} setShowModal={setShowModal} data={bill}/>
+      <ModalBill showModal={showModal} setShowModal={setShowModal} data={bill} payment={paymentValue}/>
     </>
   );
 };
