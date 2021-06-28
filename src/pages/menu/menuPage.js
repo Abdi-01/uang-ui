@@ -22,7 +22,7 @@ export const MenuWrapper = styled.div`
     margin: 20px 0;
 `
 
-export const Logo = styled.div`
+export const Logo = styled.button`
     color: #fff;
     background: #d7ccc8;
     color: black;
@@ -122,6 +122,7 @@ export const Payment = styled.div`
 export const LogoWrapper = styled.div`
     display: flex;
     justify-content: space-around;
+    margin-bottom: 10px;
 `
 
 export const ButtonBill = styled.button`

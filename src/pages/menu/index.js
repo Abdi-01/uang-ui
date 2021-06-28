@@ -36,6 +36,10 @@ const MenuPage = () => {
   const [items, setItems] = useState(null);
   const [bill, setBill] = useState([]);
   const [subtotal, setSubtotal] = useState(null);
+  const [payment, setPayment] = useState({
+    cash: 'block',
+    coupon: 'none'
+  })
   const { data } = useSelector(({ itemReducer }) => {
     return {
       data: itemReducer.item,
@@ -52,6 +56,24 @@ const MenuPage = () => {
       setItems(data);
     }
   };
+
+  const handleClickCash = () => {
+    if (payment.cash === 'none') {
+      setPayment({...payment, cash: 'block'})
+    }
+    else {
+      setPayment({...payment, cash: 'none'})
+    }
+  }
+
+  const handleClickCoupon = () => {
+    if (payment.coupon === 'none') {
+      setPayment({...payment, coupon: 'block'})
+    }
+    else {
+      setPayment({...payment, coupon: 'none'})
+    }
+  }
 
   const handleInitialData = () => {
     if (data !== []) {
@@ -210,15 +232,35 @@ const MenuPage = () => {
           <Payment>
             <h2>Payment Method</h2>
             <LogoWrapper>
-              <Logo>
+              <Logo onClick={handleClickCash}>
                 <GiCash />
                 <Caption>Cash</Caption>
               </Logo>
-              <Logo>
+              <Logo onClick={handleClickCoupon}>
                 <RiCoupon2Fill />
                 <Caption>Coupon</Caption>
               </Logo>
             </LogoWrapper>
+            <Grid container spacing={3}>
+              <Grid item xs={6}>
+                <TextField fullWidth
+                  type="number" 
+                  label="Input cash" 
+                  size="small" 
+                  variant="filled"
+                  style={{display: payment.cash}}
+                />
+              </Grid>
+            <Grid item xs={6}>
+              <TextField fullWidth
+                type="text" 
+                label="Input coupon code" 
+                size="small" 
+                variant="filled"
+                style={{display: payment.coupon}}
+              />
+            </Grid>
+            </Grid>
           </Payment>
           <ButtonBill>
             <h3>Print Bill</h3>
