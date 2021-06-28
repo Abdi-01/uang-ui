@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SidebarComponent from "../../components/sidebar";
 import NavbarComponent from "../../components/navbar";
+import ModalBill from "../../components/modalBill" 
 import { useSelector } from "react-redux";
 import { IoFastFood } from "react-icons/io5";
 import { SiCoffeescript } from "react-icons/si";
@@ -36,8 +37,9 @@ const MenuPage = () => {
   const [items, setItems] = useState(null);
   const [bill, setBill] = useState([]);
   const [subtotal, setSubtotal] = useState(null);
+  const [showModal, setShowModal] = useState(false)
   const [payment, setPayment] = useState({
-    cash: 'block',
+    cash: 'none',
     coupon: 'none'
   })
   const { data } = useSelector(({ itemReducer }) => {
@@ -45,6 +47,11 @@ const MenuPage = () => {
       data: itemReducer.item,
     };
   });
+
+  const openModalBill = (item, total) => {
+    setShowModal(prev => !prev)
+    // console.log("data update to child component", dataUpdate)
+}
 
   const handleClickItem = (filter) => {
     // console.log(filter)
@@ -262,11 +269,12 @@ const MenuPage = () => {
             </Grid>
             </Grid>
           </Payment>
-          <ButtonBill>
+          <ButtonBill onClick={openModalBill}>
             <h3>Print Bill</h3>
           </ButtonBill>
         </BillContainer>
       </Container>
+      <ModalBill showModal={showModal} setShowModal={setShowModal} data={bill}/>
     </>
   );
 };
