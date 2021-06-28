@@ -73,7 +73,7 @@ const MenuPage = () => {
     }
     let newBill = bill.concat(billData);
     setBill(newBill);
-    // console.log(bill);
+    console.log("Bill state", bill);
     handleTotalPayment()
   };
 
@@ -92,11 +92,11 @@ const MenuPage = () => {
 
   const handleTotalPayment = () => {
     let values = []
-    bill.forEach(element => {
-      values.push(element.subtotal)
-    })
-    // console.log(values)
-    if (values !== []) {
+    console.log("Bill", bill.length)
+    if (bill.length > 0) {
+      bill.forEach(element => {
+        values.push(element.subtotal)
+      })
       let result = values.reduce((accumulator, currentValue) => accumulator + currentValue).toLocaleString()
       setSubtotal(result)
     }
@@ -194,17 +194,19 @@ const MenuPage = () => {
               <Caption>Food</Caption>
             </Logo>
           </MenuWrapper>
-          <Grid container spacing={0}>
+          <Grid container spacing={0} style={{overflow: 'scroll', height: '100%'}}>
             {printCard()}
           </Grid>
         </MainWrapper>
         <BillContainer show={true}>
             <h2>Bills</h2>
             {printBillCard()}
-           <Subtotal>
+          {(bill.length > 0) ?
+          <Subtotal>
             <p>Total</p>
             <p>IDR {subtotal}</p>
-          </Subtotal>
+          </Subtotal> : <></>
+          }
           <Payment>
             <h2>Payment Method</h2>
             <LogoWrapper>
