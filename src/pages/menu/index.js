@@ -35,6 +35,7 @@ import {
 const MenuPage = () => {
   const [items, setItems] = useState(null);
   const [bill, setBill] = useState([]);
+  const [subtotal, setSubtotal] = useState(null);
   const { data } = useSelector(({ itemReducer }) => {
     return {
       data: itemReducer.item,
@@ -73,6 +74,7 @@ const MenuPage = () => {
     let newBill = bill.concat(billData);
     setBill(newBill);
     // console.log(bill);
+    handleTotalPayment()
   };
 
   const handleChangeSubtotal = (id, event) => {
@@ -85,6 +87,7 @@ const MenuPage = () => {
       }
     });
     setBill(dataBills)
+    handleTotalPayment()
   };
 
   const handleTotalPayment = () => {
@@ -92,8 +95,9 @@ const MenuPage = () => {
     bill.forEach(element => {
       values.push(element.subtotal)
     })
-    console.log(values)
-    return values.reduce((accumulator, currentValue) => accumulator + currentValue).toLocaleString()
+    // console.log(values)
+    let result = values.reduce((accumulator, currentValue) => accumulator + currentValue).toLocaleString()
+    setSubtotal(result)
   }
 
   const printCard = () => {
@@ -195,9 +199,9 @@ const MenuPage = () => {
         <BillContainer>
             <h2>Bills</h2>
             {printBillCard()}
-          <Subtotal>
+           <Subtotal>
             <p>Total</p>
-            <p>IDR {handleTotalPayment()}</p>
+            <p>IDR {subtotal}</p>
           </Subtotal>
           <Payment>
             <h2>Payment Method</h2>

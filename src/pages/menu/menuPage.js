@@ -111,14 +111,6 @@ export const Subtotal = styled.div`
     margin: 0;
 `
 
-export const Tax = styled.div`
-    display: flex;
-    justify-content: space-between;
-    color: grey;
-    margin: 0;
-    border-bottom: 1px solid grey;
-`
-
 export const Payment = styled.div`
     display: flex;
     flex-direction: column;
