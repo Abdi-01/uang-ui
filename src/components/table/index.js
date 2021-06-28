@@ -67,6 +67,7 @@ const ItemTableComponent = () => {
   const openModalUpdate = (item) => {
       setShowModal(prev => !prev)
       setDataUpdate(item)
+      console.log("data update to child component", dataUpdate)
   }
   
   const { data } = useSelector(({ itemReducer }) => {

@@ -96,8 +96,10 @@ const MenuPage = () => {
       values.push(element.subtotal)
     })
     // console.log(values)
-    let result = values.reduce((accumulator, currentValue) => accumulator + currentValue).toLocaleString()
-    setSubtotal(result)
+    if (values !== []) {
+      let result = values.reduce((accumulator, currentValue) => accumulator + currentValue).toLocaleString()
+      setSubtotal(result)
+    }
   }
 
   const printCard = () => {
@@ -196,7 +198,7 @@ const MenuPage = () => {
             {printCard()}
           </Grid>
         </MainWrapper>
-        <BillContainer>
+        <BillContainer show={true}>
             <h2>Bills</h2>
             {printBillCard()}
            <Subtotal>

@@ -32,13 +32,6 @@ const ModalAddItem = ({showModal, setShowModal, data}) => {
         opacity: showModal ? 1 : 0,
         transform: showModal ? `translateY(0%)` : `translateY(-100%)`
     })
-    
-    const handleInitialData = () => {
-        if (data !== undefined && data !== null) {
-            console.log("Initial data", data)
-            setValues({ ...values, id: data.id, name: data.name, idcategory: data.idcategory, description: data.description, price: data.price, discount: data.discount, imageURL: data.imageURL})
-        }
-    }
 
     const closeModal = e => {
         if (modalRef.current === e.target) {
@@ -88,8 +81,17 @@ const ModalAddItem = ({showModal, setShowModal, data}) => {
         }
     }
 
+    const handleInitialData = () => {
+        // console.log("Initial data before", data)
+        if (data !== undefined && data !== null) {
+            // console.log("Initial data after", data)
+            setValues({ ...values, id: data.id, name: data.name, idcategory: data.idcategory, description: data.description, price: data.price, discount: data.discount, imageURL: data.imageURL})
+        }
+    }
+
     const handleUpdateItem = async () => {
         try {
+            // handleInitialData()
             console.log("Data update in modal", values)
             let config = {
                 method: 'patch',
@@ -119,7 +121,9 @@ const ModalAddItem = ({showModal, setShowModal, data}) => {
         handleInitialData()
         document.addEventListener('keydown', keyPress)
         return () => document.removeEventListener('keydown', keyPress)
-    })
+    }, [keyPress])
+
+    console.log(data)
 
     return (
         <>

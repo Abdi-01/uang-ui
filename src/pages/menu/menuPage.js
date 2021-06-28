@@ -98,7 +98,8 @@ export const ItemWrapper = styled.div`
 `
 
 export const BillContainer = styled.div`
-    display: flex;
+    display: ${({show}) => ( show === true ? 'flex' : 'none')};
+    /* display: none; */
     flex-direction: column;
     padding: 20px;
     width: 500px;
