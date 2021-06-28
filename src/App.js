@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react'
+import { Route, Switch } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import MenuPage from './pages/menu';
+import ManagePage from './pages/manage';
+import ReportPage from './pages/report';
+import LogoutPage from './pages/logout';
+import { getItemAction } from './actions'
 
-function App() {
+const App = () => {
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getItemAction())
+  })
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Switch>
+        <Route exact path="/" component={MenuPage}/>
+        <Route path="/manage" component={ManagePage}/>
+        <Route path="/report" component={ReportPage}/>
+        <Route path="/logout" component={LogoutPage}/>
+      </Switch>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
+
