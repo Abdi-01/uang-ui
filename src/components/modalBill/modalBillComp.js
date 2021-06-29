@@ -49,7 +49,7 @@ export const DetailBill = styled.div`
 `
 
 export const BillDetail = styled.div`
-    border-bottom: 2px solid grey;
+    border-bottom: 1px solid grey;
     margin: 10px 0;
 `
 
@@ -73,4 +73,5 @@ export const Payment = styled.div`
     display: flex;
     flex-direction: column;
     margin: 10px 0;
+    border-bottom: 1px solid grey;
 `
