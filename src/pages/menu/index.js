@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SidebarComponent from "../../components/sidebar";
 import NavbarComponent from "../../components/navbar";
+import ModalBill from "../../components/modalBill" 
 import { useSelector } from "react-redux";
 import { IoFastFood } from "react-icons/io5";
 import { SiCoffeescript } from "react-icons/si";
@@ -36,11 +37,25 @@ const MenuPage = () => {
   const [items, setItems] = useState(null);
   const [bill, setBill] = useState([]);
   const [subtotal, setSubtotal] = useState(null);
+  const [showModal, setShowModal] = useState(false)
+  const [payment, setPayment] = useState({
+    cash: 'none',
+    coupon: 'none'
+  })
+  const [paymentValue, setPaymentValue] = useState({
+    cash: null,
+    coupon: null
+  })
   const { data } = useSelector(({ itemReducer }) => {
     return {
       data: itemReducer.item,
     };
   });
+
+  const openModalBill = (item, total) => {
+    setShowModal(prev => !prev)
+    // console.log("data update to child component", dataUpdate)
+}
 
   const handleClickItem = (filter) => {
     // console.log(filter)
@@ -52,6 +67,24 @@ const MenuPage = () => {
       setItems(data);
     }
   };
+
+  const handleClickCash = () => {
+    if (payment.cash === 'none') {
+      setPayment({...payment, cash: 'block'})
+    }
+    else {
+      setPayment({...payment, cash: 'none'})
+    }
+  }
+
+  const handleClickCoupon = () => {
+    if (payment.coupon === 'none') {
+      setPayment({...payment, coupon: 'block'})
+    }
+    else {
+      setPayment({...payment, coupon: 'none'})
+    }
+  }
 
   const handleInitialData = () => {
     if (data !== []) {
@@ -73,7 +106,7 @@ const MenuPage = () => {
     }
     let newBill = bill.concat(billData);
     setBill(newBill);
-    // console.log(bill);
+    console.log("Bill state", bill);
     handleTotalPayment()
   };
 
@@ -92,11 +125,11 @@ const MenuPage = () => {
 
   const handleTotalPayment = () => {
     let values = []
-    bill.forEach(element => {
-      values.push(element.subtotal)
-    })
-    // console.log(values)
-    if (values !== []) {
+    console.log("Bill", bill.length)
+    if (bill.length > 0) {
+      bill.forEach(element => {
+        values.push(element.subtotal)
+      })
       let result = values.reduce((accumulator, currentValue) => accumulator + currentValue).toLocaleString()
       setSubtotal(result)
     }
@@ -158,7 +191,10 @@ const MenuPage = () => {
                         IDR {item.subtotal.toLocaleString()}
                     </Text>
                 </EditBill>
-                <TextField label="Note" size="small" variant="filled" fullWidth/>
+                <TextField label="Note" size="small" variant="filled" fullWidth
+                  onChange={(event) =>
+                    setBill({ ...bill, note: event.target.value })
+                  }/>
             </ContentBill>
         </BillCard>
       });
@@ -194,35 +230,64 @@ const MenuPage = () => {
               <Caption>Food</Caption>
             </Logo>
           </MenuWrapper>
-          <Grid container spacing={0}>
+          <Grid container spacing={0} style={{overflow: 'scroll', height: '100%'}}>
             {printCard()}
           </Grid>
         </MainWrapper>
         <BillContainer show={true}>
             <h2>Bills</h2>
             {printBillCard()}
-           <Subtotal>
+          {(bill.length > 0) ?
+          <Subtotal>
             <p>Total</p>
             <p>IDR {subtotal}</p>
-          </Subtotal>
+          </Subtotal> : <></>
+          }
           <Payment>
             <h2>Payment Method</h2>
             <LogoWrapper>
-              <Logo>
+              <Logo onClick={handleClickCash}>
                 <GiCash />
                 <Caption>Cash</Caption>
               </Logo>
-              <Logo>
+              <Logo onClick={handleClickCoupon}>
                 <RiCoupon2Fill />
                 <Caption>Coupon</Caption>
               </Logo>
             </LogoWrapper>
+            <Grid container spacing={3}>
+              <Grid item xs={6}>
+                <TextField fullWidth
+                  type="number" 
+                  label="Input cash" 
+                  size="small" 
+                  variant="filled"
+                  onChange={(event) =>
+                    setPaymentValue({ ...paymentValue, cash: event.target.value })
+                  }
+                  style={{display: payment.cash}}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField fullWidth
+                  type="text" 
+                  label="Input coupon code" 
+                  size="small" 
+                  variant="filled"
+                  onChange={(event) =>
+                    setPaymentValue({ ...paymentValue, coupon: event.target.value })
+                  }
+                  style={{display: payment.coupon}}
+                />
+              </Grid>
+            </Grid>
           </Payment>
-          <ButtonBill>
+          <ButtonBill onClick={openModalBill}>
             <h3>Print Bill</h3>
           </ButtonBill>
         </BillContainer>
       </Container>
+      <ModalBill showModal={showModal} setShowModal={setShowModal} data={bill} payment={paymentValue}/>
     </>
   );
 };
