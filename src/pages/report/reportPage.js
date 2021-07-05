@@ -12,7 +12,7 @@ export const Container = styled.div`
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 1180px;
+    min-width: 1180px;
     padding: 0 30px;
 `
 
@@ -44,4 +44,16 @@ export const SearchResult = styled.div`
     width: calc(100% - 296px);
     margin-left: 296px;
     border: 1px solid blue;
+`
+
+export const CardContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid black;
+    border-radius: 5px;
+`
+
+export const TextCard = styled.div`
+    border: 1px solid black;
+    width: 220px;
 `
