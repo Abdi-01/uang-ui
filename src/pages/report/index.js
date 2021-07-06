@@ -20,6 +20,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import Pagination from '@material-ui/lab/Pagination';
 import { 
     MenuWrapper, 
     Container, 
@@ -27,8 +29,6 @@ import {
     ContentContainer,
     SearchBar,
     SearchResult,
-    CardContainer,
-    TextCard
 } from "./reportPage";
 
 const StyledTableCell = withStyles((theme) => ({
@@ -55,6 +55,9 @@ const useStyles = makeStyles((theme) => ({
     },
     root: {
       display: 'flex',
+      '& > *': {
+        marginTop: theme.spacing(2),
+      }
     },
     formControl: {
       margin: theme.spacing(1),
@@ -102,32 +105,38 @@ const sortType = [
     }
 ]
 
-
 const ReportPage = () => {
     const classes = useStyles();
 
     const [selectedStartDate, handleStartDateChange] = useState(new Date());
     const [selectedEndDate, handleEndDateChange] = useState(new Date());
-    const [sort, setSort] = useState('ascending');
+    const [sort, setSort] = useState('ASC');
     const [state, setState] = useState({
         coffee: true,
-        juice: false,
-        food: false,
+        juice: true,
+        food: true,
     });
     const [report, setReport] = useState(null)
+    const [page, setPage] = React.useState(1);
+    
+    const handleChangePage = (event, value) => {
+        setPage(value);
+        getReport()
+    };
 
     const getReport = async () => {
         try {
             let config = {
                 method: 'get',
-                url: URL_API + 'receipt/read',
+                url: URL_API + `receipt/read/10/${10*(page-1)}?sort=${sort}`,
                 headers: {
                     'Content-Type': 'application/json',
                 }
             }
             let response = await axios(config)
+            // console.log("response data", response.data)
             setReport(response.data)
-            console.log("report action", report)
+            console.log("report action", report.length)
         } catch (error) {
             console.log(error)
         }
@@ -138,27 +147,43 @@ const ReportPage = () => {
     }, [])
 
     const handleChangeType = (event) => {
-        setState({ ...state, [event.target.name]: event.target.checked });
+        setState({ ...state, [event.target.name]: event.target.checked })
+        console.log(state)
+        let filter = []
+        for (const property in state) {
+            if (state[property] === true) {
+                filter.push(`word.category === '${property}'`)
+            }
+        }
+        console.log(filter.join(' || '))
+        // let dataFiltered = report.filter(word => word.category === 'food' || word.category === 'juice' || word.category === 'coffee')
+        let dataFiltered = report.filter(word => filter.join(' || '))
+        setReport(dataFiltered)
     };
 
     const { coffee, juice, food } = state;
 
     const handleChangeSort = (event) => {
+        // console.log(event.target.value)
         setSort(event.target.value);
+        getReport()
     };
 
     const printCardReport = () => {
-        console.log(report)
+        // console.log(report)
         if (report.length > 0) {
             return report.map((item) => {
-                return  <StyledTableRow key={item.name}>
+                return  <StyledTableRow key={item.id}>
                             <StyledTableCell align="left">{item.name}</StyledTableCell>
-                            <StyledTableCell align="center">{item.date}</StyledTableCell>
+                            <StyledTableCell align="left">{item.category}</StyledTableCell>
+                            <StyledTableCell align="center">{item.date.substring(0, 10)}</StyledTableCell>
                             <StyledTableCell align="center">IDR {item.subtotal.toLocaleString()}</StyledTableCell>
                         </StyledTableRow>
             })
         }
     }
+
+    // console.log("report length", report.length)
 
     return (
         <>
@@ -202,8 +227,8 @@ const ReportPage = () => {
                         <FormControl component="fieldset" className={classes.formControl}>
                             <FormLabel component="legend">Time</FormLabel>
                             <RadioGroup aria-label="sort" name="sort" value={sort} onChange={handleChangeSort}>
-                                <FormControlLabel value="ascending" control={<Radio />} label="Ascending" />
-                                <FormControlLabel value="descending" control={<Radio />} label="Descending" />
+                                <FormControlLabel value="ASC" control={<Radio />} label="Ascending" />
+                                <FormControlLabel value="DESC" control={<Radio />} label="Descending" />
                             </RadioGroup>
                         </FormControl>
                         <FormControl component="fieldset" className={classes.formControl}>
@@ -227,19 +252,23 @@ const ReportPage = () => {
                     <SearchResult>
                     <TableContainer component={Paper}>
                         <Table className={classes.table} aria-label="customized table">
-                        <TableHead>
-                            <TableRow>
-                                <StyledTableCell>Name</StyledTableCell>
-                                <StyledTableCell align="center">Date</StyledTableCell>
-                                <StyledTableCell align="center">Price</StyledTableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {(report !== null) ? printCardReport() : null}
-                        </TableBody>
+                            <TableHead>
+                                <TableRow>
+                                    <StyledTableCell>Name</StyledTableCell>
+                                    <StyledTableCell>Category</StyledTableCell>
+                                    <StyledTableCell align="center">Date</StyledTableCell>
+                                    <StyledTableCell align="center">Price</StyledTableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {(report !== null) ? printCardReport() : null}
+                            </TableBody>
                         </Table>
                     </TableContainer>
-                        
+                        <div className={classes.root}>
+                            <Typography>Page: {page}</Typography>
+                            <Pagination count={5} color="primary" page={page} onChange={handleChangePage} />
+                        </div>
                     </SearchResult>        
                 </ContentContainer>
             </Container>

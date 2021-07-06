@@ -45,15 +45,3 @@ export const SearchResult = styled.div`
     margin-left: 296px;
     border: 1px solid blue;
 `
-
-export const CardContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    border: 1px solid black;
-    border-radius: 5px;
-`
-
-export const TextCard = styled.div`
-    border: 1px solid black;
-    width: 220px;
-`
