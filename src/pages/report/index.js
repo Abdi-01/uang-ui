@@ -121,7 +121,7 @@ const ReportPage = () => {
     
     const handleChangePage = (event, value) => {
         setPage(value);
-        getReport()
+        // getReport()
     };
 
     const getReport = async () => {
@@ -136,7 +136,7 @@ const ReportPage = () => {
             let response = await axios(config)
             // console.log("response data", response.data)
             setReport(response.data)
-            console.log("report action", report.length)
+            // console.log("report action", report.length)
         } catch (error) {
             console.log(error)
         }
@@ -144,7 +144,7 @@ const ReportPage = () => {
 
     useEffect(() => {
         getReport()
-    }, [])
+    }, [sort, page])
 
     const handleChangeType = (event) => {
         setState({ ...state, [event.target.name]: event.target.checked })
@@ -156,17 +156,18 @@ const ReportPage = () => {
             }
         }
         console.log(filter.join(' || '))
-        // let dataFiltered = report.filter(word => word.category === 'food' || word.category === 'juice' || word.category === 'coffee')
-        let dataFiltered = report.filter(word => filter.join(' || '))
-        setReport(dataFiltered)
+        // let dataFiltered = report.filter(word => word.category === 'food' || word.category === 'coffee')
+        // console.log("dataFiltered1", dataFiltered)
+        let dataFiltered2 = report.filter(word => filter.join(' || '))
+        console.log("dataFiltered2", dataFiltered2)
+        setReport(dataFiltered2)
     };
 
     const { coffee, juice, food } = state;
 
     const handleChangeSort = (event) => {
-        // console.log(event.target.value)
         setSort(event.target.value);
-        getReport()
+        // getReport()
     };
 
     const printCardReport = () => {
@@ -182,8 +183,6 @@ const ReportPage = () => {
             })
         }
     }
-
-    // console.log("report length", report.length)
 
     return (
         <>
