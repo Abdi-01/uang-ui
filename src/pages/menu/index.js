@@ -217,15 +217,15 @@ const MenuPage = () => {
               <IoFastFood />
               <Caption>All</Caption>
             </Logo>
-            <Logo onClick={() => handleClickItem("Coffee")}>
+            <Logo onClick={() => handleClickItem("coffee")}>
               <SiCoffeescript />
               <Caption>Coffee</Caption>
             </Logo>
-            <Logo onClick={() => handleClickItem("Juice")}>
+            <Logo onClick={() => handleClickItem("juice")}>
               <GiFruitBowl />
               <Caption>Juice</Caption>
             </Logo>
-            <Logo onClick={() => handleClickItem("Food")}>
+            <Logo onClick={() => handleClickItem("food")}>
               <GiFoodChain />
               <Caption>Food</Caption>
             </Logo>
