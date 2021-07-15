@@ -1,4 +1,4 @@
-# Mini Project from Purwadhika Student : Purwa Express
+# Mini Project from Purwadhika Student : Uang
 **Created by : Ido Widya Yudhatama(JCWM-BDG0005-003), Muhammad Putera Bela Agama(JCWM-BDG0005-007)**
 
 **Managed by : Abdi Alghifara Felinanda(Purwadhika Mentor)**
