@@ -8,13 +8,13 @@ Project ini merupakan hasil implementasi dari semua materi yang telah dipelajari
 ## Web Preview
 
 ### Order Page
-!["landingpage"](documentation/4.png)
+!["landingpage"](documentation/4.PNG)
 
-!["Order"](documentation/5.png)
+!["Order"](documentation/5.PNG)
 
 ### Manage Menu 
-!["manage"](documentation/1.png)
-!["report"](documentation/7.png)
+!["manage"](documentation/1.PNG)
+!["report"](documentation/7.PNG)
 
 ### Library Used (Front End)
 - [Antd](https://ant.design/) for layouting and make component.
